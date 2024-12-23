@@ -1,0 +1,53 @@
+services:
+    app:
+        build:
+            context: ./docker/app/
+            dockerfile: Dockerfile
+        container_name: diff-bot-app
+        restart: unless-stopped
+        working_dir: '/var/www'
+        volumes:
+            - './:/var/www/'
+        depends_on:
+            - db
+        networks:
+            - diff-bot
+
+    db:
+        image: mysql:8
+        ports:
+            - '3306:3306'
+        container_name: diff-bot-mysql
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_DATABASE=$DB_DATABASE
+            - MYSQL_USER=$DB_USERNAME
+            - MYSQL_PASSWORD=$DB_PASSWORD
+            - MYSQL_ALLOW_EMPTY_PASSWORD=1
+        volumes:
+            - './docker/volume/mysql:/var/lib/mysql'
+        networks:
+            - diff-bot
+
+    nginx:
+        image: nginx:latest
+        container_name: diff-bot-nginx
+        restart: unless-stopped
+        ports:
+            - '9000:80'
+        volumes:
+            - './:/var/www'
+            - './docker/nginx/conf.d:/etc/nginx/conf.d'
+        networks:
+            - diff-bot
+
+networks:
+    diff-bot:
+        driver: bridge
+volumes:
+    diff-bot-mysql:
+        driver: local
