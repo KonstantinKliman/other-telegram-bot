@@ -1,6 +1,7 @@
 <?php
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
+use App\Telegram\Commands\StartCommand;
 use SergiX44\Nutgram\Nutgram;
 
 /*
@@ -13,6 +14,5 @@ use SergiX44\Nutgram\Nutgram;
 |
 */
 
-$bot->onCommand('start', function (Nutgram $bot) {
-    $bot->sendMessage('Hello, world!');
-})->description('The start command!');
+$bot->onCommand('start', StartCommand::class)
+    ->description('The start command!');
