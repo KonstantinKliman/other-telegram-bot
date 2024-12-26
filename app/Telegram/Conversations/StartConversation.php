@@ -2,10 +2,13 @@
 
 namespace App\Telegram\Conversations;
 
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class StartConversation extends InlineMenu
 {
@@ -22,15 +25,23 @@ class StartConversation extends InlineMenu
 
     public function button1(Nutgram $bot)
     {
+        $chatId = $bot->user()?->id;
+
+        $bot->sendVideo(
+            video: InputFile::make(fopen('assets/files/Cut_2.mp4', 'r+')),
+            chat_id: $chatId,
+        );
+
         $this->clearButtons();
 
-        $text = "Video +
-    السلام عليكم للحصول على كود برومو يرجى اتباع الخطوات التالية :
-\n\n
+        $this->closeMenu();
+
+        $text = "    السلام عليكم للحصول على كود برومو يرجى اتباع الخطوات التالية :
+\n
 سجل هنا
-\n\n
+\n
 https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
-و إبعثلي سكرين شوت بعد تسجيل .\n\n
+و إبعثلي سكرين شوت بعد تسجيل .\n
     أرسل لي كود برومو الذي تريد  و إيمايل مسجل به ؟";
 
         $bot->sendMessage($text);
@@ -42,9 +53,13 @@ https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
     {
         $this->clearButtons();
 
-        $text = "للحصول على حساب تجريبي يجب :\n
-1. ارسال قناتك التي ستروج بها بالحساب التجريبي\n
-2. يكون لديك خمس سجلات مع ايداع بالبروموكود الخاص بك";
+        $this->closeMenu();
+
+        $text = "للحصول على حساب تجريبي يجب :
+\n
+1. ارسال قناتك التي ستروج بها بالحساب التجريبي
+\n
+2. يكون لديك خمس تسجلات مع ايداع بالبروموكود الخاص بك";
 
         $bot->sendMessage($text);
 
@@ -54,6 +69,8 @@ https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
     public function button3(Nutgram $bot)
     {
         $this->clearButtons();
+
+        $this->closeMenu();
 
         $text = "1.يجب ارسال رقم حساب الوكلاء الخاص بك\n
 2.ارسال سكرين شوت للصفحه الاولى لحسابك الوكلاء\n
@@ -72,6 +89,8 @@ https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
     {
         $this->clearButtons();
 
+        $this->closeMenu();
+
         $text = "للحصول على موبي كاش يجب:\n
 1. تسجيل والحصول على برومو كود خاص بك.\n
 2. يجب تعبئه حسابك المربوط موبي كاش بمبلغ لا يقل عن 100 دولار.\n
@@ -85,6 +104,8 @@ https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
     public function button5(Nutgram $bot)
     {
         $this->clearButtons();
+
+        $this->closeMenu();
 
         $text = "للحصول على خدمه بنكيه يجب ان تكون من افضل وكلاء البرومو كود\n
 لو تريد برومو كود خاص بك اكتب اوكي";
