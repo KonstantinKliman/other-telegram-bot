@@ -26,5 +26,5 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 # Expose port 9000 and start php-fpm server
-EXPOSE 9000
+EXPOSE 80
 CMD ["php-fpm"]
