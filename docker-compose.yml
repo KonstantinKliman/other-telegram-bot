@@ -38,7 +38,7 @@ services:
         container_name: linebet-mohammad-bot-nginx
         restart: unless-stopped
         ports:
-            - '80:80'
+            - '9000:80'
         volumes:
             - './:/var/www'
             - './docker/nginx/conf.d:/etc/nginx/conf.d'
