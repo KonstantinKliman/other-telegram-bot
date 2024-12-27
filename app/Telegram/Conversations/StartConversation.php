@@ -51,6 +51,10 @@ class StartConversation extends InlineMenu
         $this->closeMenu();
 
         foreach ($files as $file) {
+            Log::info('Файл для отправки:', [
+                'type' => $file->type,
+                'path' => $file->path,
+            ]);
             switch ($file->type) {
                 case FileTypeEnum::IMAGE->value :
                     $bot->sendPhoto(
