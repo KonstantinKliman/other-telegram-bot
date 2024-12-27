@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->enum('type', [
-                \App\Enums\FileTypeEnum::PHOTO->value,
+                \App\Enums\FileTypeEnum::IMAGE->value,
                 \App\Enums\FileTypeEnum::VIDEO->value
             ]);
             $table->string("path");

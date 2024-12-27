@@ -1,7 +1,7 @@
 @props(['button'])
 
-<button type="button" class="btn btn-sm btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#telegramBotButtonModal-{{ $button->id }}">
-    {{ $button->text }}
+<button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#telegramBotButtonModal-{{ $button->id }}" dir="rtl">
+    Attached message
 </button>
 
 <div class="modal fade" id="telegramBotButtonModal-{{ $button->id }}" tabindex="-1" aria-labelledby="telegramBotButtonModalLabel" aria-hidden="true">
@@ -12,7 +12,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>{{ $button->nextMessage->text }}</p>
+                <p dir="rtl">{{ $button->nextMessage->text }}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

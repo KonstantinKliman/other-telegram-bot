@@ -6,6 +6,7 @@ use App\DTO\LoginUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\Interfaces\UserServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -23,5 +24,10 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         return $this->userService->login(new LoginUserDTO($request->validated('login'), $request->validated('password')));
+    }
+
+    public function logout()
+    {
+        Auth::logout();
     }
 }

@@ -52,15 +52,13 @@ class StartConversation extends InlineMenu
 
         foreach ($files as $file) {
             switch ($file->type) {
-                case FileTypeEnum::PHOTO->value :
-                    Log::info('photo');
+                case FileTypeEnum::IMAGE->value :
                     $bot->sendPhoto(
                         photo: InputFile::make($file->path),
                         chat_id: $chatId,
                     );
                     break;
                 case FileTypeEnum::VIDEO->value :
-                    Log::info('video');
                     $bot->sendVideo(
                         video: InputFile::make(fopen($file->path, 'r+')),
                         chat_id: $chatId,

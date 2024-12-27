@@ -34,4 +34,36 @@ class MessageRepository implements MessageRepositoryInterface
             'id' => $id
         ])->first();
     }
+
+    public function create(string $text)
+    {
+        Message::query()->create([
+            'type' => MessageTypeEnum::SECOND_MESSAGE->value,
+            'text' => $text
+        ]);
+    }
+
+    public function delete(int $id)
+    {
+        Message::query()->where([
+            'id' => $id
+        ])->delete();
+    }
+
+    public function getAllAvailableMessages()
+    {
+        return Message::query()->where([
+            'type' => MessageTypeEnum::SECOND_MESSAGE->value,
+        ])->get();
+    }
+
+    public function attachFileToMessage(Message $message, int $fileId)
+    {
+        $message->files()->attach($fileId);
+    }
+
+    public function detachFileFromMessage(Message $message, int $fileId)
+    {
+        $message->files()->detach($fileId);
+    }
 }

@@ -6,7 +6,7 @@
     <div class="container-fluid h-100">
         <div class="row h-100 d-flex justify-content-center align-items-center">
             <div class="col-auto p-5 bg-body-secondary border rounded w-25">
-                <form action="#" method="POST">
+                <form action="{{ route('login.action') }}" method="POST">
                     @csrf
                     <div class="mb-3 d-flex justify-content-center">
                         <h1>Login</h1>

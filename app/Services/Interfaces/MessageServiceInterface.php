@@ -11,4 +11,10 @@ interface MessageServiceInterface
     public function getAllMessages();
 
     public function update(int $id, array $data);
+
+    public function create(string $text);
+
+    public function delete(int $id);
+
+    public function getById(int $id);
 }

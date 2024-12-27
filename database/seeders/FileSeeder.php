@@ -17,9 +17,9 @@ class FileSeeder extends Seeder
 
     public function run(): void
     {
-        $file = File::query()->create(self::FILE);
-
-        $message = Message::query()->where(['id' => 2])->first();
-        $message->files()->attach($file->id);
+//        $file = File::query()->create(self::FILE);
+//
+//        $message = Message::query()->where(['id' => 2])->first();
+//        $message->files()->attach($file->id);
     }
 }

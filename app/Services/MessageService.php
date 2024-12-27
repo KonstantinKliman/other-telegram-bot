@@ -29,4 +29,19 @@ class MessageService implements MessageServiceInterface
         $message = $this->messageRepository->getById($id);
         $this->messageRepository->update($message, $data['text']);
     }
+
+    public function create(string $text)
+    {
+        $this->messageRepository->create($text);
+    }
+
+    public function delete(int $id)
+    {
+        $this->messageRepository->delete($id);
+    }
+
+    public function getById(int $id)
+    {
+        // TODO: Implement getById() method.
+    }
 }

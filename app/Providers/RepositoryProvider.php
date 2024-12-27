@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\ButtonRepository;
+use App\Repositories\FileRepository;
 use App\Repositories\Interfaces\ButtonRepositoryInterface;
+use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\Interfaces\MessageRepositoryInterface;
 use App\Repositories\Interfaces\TelegramUserRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -23,6 +25,7 @@ class RepositoryProvider extends ServiceProvider
         $this->app->bind(TelegramUserRepositoryInterface::class, TelegramUserRepository::class);
         $this->app->bind(MessageRepositoryInterface::class, MessageRepository::class);
         $this->app->bind(ButtonRepositoryInterface::class, ButtonRepository::class);
+        $this->app->bind(FileRepositoryInterface::class, FileRepository::class);
     }
 
     /**

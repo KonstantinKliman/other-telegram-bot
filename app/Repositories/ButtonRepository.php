@@ -20,4 +20,20 @@ class ButtonRepository implements ButtonRepositoryInterface
     {
         return Button::query()->get();
     }
+
+    public function create(mixed $text, mixed $nextMessageId)
+    {
+        Button::query()->create([
+            'text' => $text,
+            'message_id' => 1,
+            'next_message_id' => $nextMessageId
+        ]);
+    }
+
+    public function update(Button $button, string $text)
+    {
+        $button->update([
+            'text' => $text
+        ]);
+    }
 }
