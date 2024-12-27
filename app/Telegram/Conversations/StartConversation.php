@@ -54,13 +54,13 @@ class StartConversation extends InlineMenu
             switch ($file->type) {
                 case FileTypeEnum::IMAGE->value :
                     $bot->sendPhoto(
-                        photo: $file->path,
+                        photo: InputFile::make(fopen(str_replace(config('app.url') . '/storage/', '', $file->path), '+r')),
                         chat_id: $chatId,
                     );
                     break;
                 case FileTypeEnum::VIDEO->value :
                     $bot->sendVideo(
-                        video: $file->path,
+                        video: InputFile::make(fopen(str_replace(config('app.url') . '/storage/', '', $file->path), '+r')),
                         chat_id: $chatId,
                     );
                     break;
