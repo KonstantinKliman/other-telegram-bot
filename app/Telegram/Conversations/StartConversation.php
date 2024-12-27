@@ -60,7 +60,7 @@ class StartConversation extends InlineMenu
                     break;
                 case FileTypeEnum::VIDEO->value :
                     $bot->sendVideo(
-                        video: InputFile::make(fopen($file->path, 'r+')),
+                        video: InputFile::make($file->path),
                         chat_id: $chatId,
                     );
                     break;
