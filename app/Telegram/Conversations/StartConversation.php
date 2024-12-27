@@ -2,113 +2,72 @@
 
 namespace App\Telegram\Conversations;
 
+use App\Enums\FileTypeEnum;
+use App\Enums\MessageTypeEnum;
+use App\Services\Interfaces\ButtonServiceInterface;
+use App\Services\Interfaces\FileServiceInterface;
+use App\Services\Interfaces\MessageServiceInterface;
+use App\Services\Interfaces\TelegramUserServiceInterface;
 use Illuminate\Support\Facades\Log;
-use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class StartConversation extends InlineMenu
 {
-    public function start(Nutgram $bot)
+    public function __construct(
+        private readonly TelegramUserServiceInterface $telegramUserService,
+        private readonly MessageServiceInterface $messageService,
+        private readonly ButtonServiceInterface $buttonService,
+        private readonly FileServiceInterface $fileService,
+    )
     {
-        $this->menuText("مرحبا بكم في بوط الوكلاء Linebet partners")
-            ->addButtonRow(InlineKeyboardButton::make("1. التسجيل في حساب الوكلاء والحصول على بروموكاد خاص بيك.", callback_data: "null@button1"))
-            ->addButtonRow(InlineKeyboardButton::make("2.الحصول على حساب ديمو (حساب تجريبي)؟", callback_data: "null@button2"))
-            ->addButtonRow(InlineKeyboardButton::make("3.تفعيل سحب الارباح وربط الحساب", callback_data: "null@button3"))
-            ->addButtonRow(InlineKeyboardButton::make("4.الحصول على موبي كاش", callback_data: "null@button4"))
-            ->addButtonRow(InlineKeyboardButton::make("5.الحصول على خدمه بنكيه", callback_data: "null@button5"))
-            ->showMenu();
+        parent::__construct();
     }
 
-    public function button1(Nutgram $bot)
+    public function start(Nutgram $bot)
+    {
+        $message = $this->messageService->getMessageByType(MessageTypeEnum::START_MESSAGE);
+        $buttons = $message->buttons;
+
+        $inlineMenuBuilder = $this->menuText($message->text);
+        foreach ($buttons as $button) {
+            $inlineMenuBuilder->addButtonRow(InlineKeyboardButton::make($button->text, callback_data: "$button->id@showButtonText"));
+        }
+        $inlineMenuBuilder->showMenu();
+    }
+
+    public function showButtonText(Nutgram $bot)
     {
         $chatId = $bot->user()?->id;
 
-        $bot->sendVideo(
-            video: InputFile::make(fopen('assets/files/Cut_2.mp4', 'r+')),
-            chat_id: $chatId,
-        );
+        $buttonId = $bot->callbackQuery()->data;
+        $button = $this->buttonService->getById($buttonId);
+        $text = $button->nextMessage->text;
+        $files = $this->fileService->getAllByMessage($button->nextMessage);
 
         $this->clearButtons();
-
         $this->closeMenu();
 
-        $text = "    السلام عليكم للحصول على كود برومو يرجى اتباع الخطوات التالية :
-\n
-سجل هنا
-\n
-https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
-و إبعثلي سكرين شوت بعد تسجيل .\n
-    أرسل لي كود برومو الذي تريد  و إيمايل مسجل به ؟";
-
-        $bot->sendMessage($text);
-
-        $this->next('finishMessage');
-    }
-
-    public function button2(Nutgram $bot)
-    {
-        $this->clearButtons();
-
-        $this->closeMenu();
-
-        $text = "للحصول على حساب تجريبي يجب :
-\n
-1. ارسال قناتك التي ستروج بها بالحساب التجريبي
-\n
-2. يكون لديك خمس تسجلات مع ايداع بالبروموكود الخاص بك";
-
-        $bot->sendMessage($text);
-
-        $this->next('finishMessage');
-    }
-
-    public function button3(Nutgram $bot)
-    {
-        $this->clearButtons();
-
-        $this->closeMenu();
-
-        $text = "1.يجب ارسال رقم حساب الوكلاء الخاص بك\n
-2.ارسال سكرين شوت للصفحه الاولى لحسابك الوكلاء\n
-3.قم بانشاء حساب اللاعب الذي يرسل اليه الاموال بدون برومو كود و تختار عملة واحدة لا يتم فيه اي مراهنات ، و تعمر فيه كل معلومات إسم لقب تاريخ الميلاد ، معلومات بطاقة الهوية ، الإيمايل او رقم هاتف . هذا الحساب لا يقوم فيه بمراهنات من فضلكم .\n
-اي معلومات ناقصة لا يتم إرسال نقود .\n
-يجب تعبأة كل خانات حساب لاعب .\n
-شكرا .\n
-ثم اكتب رقم حساب اللاعب.";
-
-        $bot->sendMessage($text);
-
-        $this->next('finishMessage');
-    }
-
-    public function button4(Nutgram $bot)
-    {
-        $this->clearButtons();
-
-        $this->closeMenu();
-
-        $text = "للحصول على موبي كاش يجب:\n
-1. تسجيل والحصول على برومو كود خاص بك.\n
-2. يجب تعبئه حسابك المربوط موبي كاش بمبلغ لا يقل عن 100 دولار.\n
-3. لو انت موافق على هذه الشروط اكتب اوكي حتى نكمل.";
-
-        $bot->sendMessage($text);
-
-        $this->next('finishMessage');
-    }
-
-    public function button5(Nutgram $bot)
-    {
-        $this->clearButtons();
-
-        $this->closeMenu();
-
-        $text = "للحصول على خدمه بنكيه يجب ان تكون من افضل وكلاء البرومو كود\n
-لو تريد برومو كود خاص بك اكتب اوكي";
+        foreach ($files as $file) {
+            switch ($file->type) {
+                case FileTypeEnum::PHOTO->value :
+                    Log::info('photo');
+                    $bot->sendPhoto(
+                        photo: InputFile::make($file->path),
+                        chat_id: $chatId,
+                    );
+                    break;
+                case FileTypeEnum::VIDEO->value :
+                    Log::info('video');
+                    $bot->sendVideo(
+                        video: InputFile::make(fopen($file->path, 'r+')),
+                        chat_id: $chatId,
+                    );
+                    break;
+            }
+        }
 
         $bot->sendMessage($text);
 
@@ -117,7 +76,12 @@ https://lb-aff.com/L?tag=d_1921219m_22613c_ref&site=1921219&ad=22613&r=sign-up/
 
     public function finishMessage(Nutgram $bot)
     {
-        $text = "يتم حاليا النظر في طلبك يرجى الانتظار حتى يتواصل معك المدير";
+        $messageFromUser = $bot->message()->text;
+        $telegramUser = $bot->user();
+
+        $this->telegramUserService->setUserDataFromMessage($telegramUser, $messageFromUser);
+
+        $text = $this->messageService->getMessageByType(MessageTypeEnum::LAST_MESSAGE);
 
         $bot->sendMessage($text);
 

@@ -2,6 +2,7 @@
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
 use App\Telegram\Commands\StartCommand;
+use App\Telegram\Middleware\CheckUserMiddleware;
 use SergiX44\Nutgram\Nutgram;
 
 /*
@@ -15,4 +16,5 @@ use SergiX44\Nutgram\Nutgram;
 */
 
 $bot->onCommand('start', StartCommand::class)
-    ->description('The start command!');
+    ->description('The start command!')
+    ->middleware(CheckUserMiddleware::class);
