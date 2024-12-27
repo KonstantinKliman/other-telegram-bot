@@ -19,12 +19,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item {{ Route::currentRouteName() == 'telegram-bot.messages.index' ? 'active' : '' }}" href="{{ route('telegram-bot.messages.index') }}">Messages</a></li>
                         <li><a class="dropdown-item {{ Route::currentRouteName() == 'telegram-bot.buttons.index' ? 'active' : '' }}" href="{{ route('telegram-bot.buttons.index') }}">Buttons</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
-                </li>
-                <li class="nav-item">
-
                 </li>
             </ul>
             <div class="d-flex align-items-center">
