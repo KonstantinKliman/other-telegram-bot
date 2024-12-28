@@ -34,11 +34,13 @@ class FileService implements FileServiceInterface
 
     public function uploadFileAndAttachToMessage(UploadedFile $file, int $messageId)
     {
-        $filePath = config('app.url') . '/' . self::STORAGE_PATH . $file->store();
+        $fileName = $file->store();
+        $filePath = self::STORAGE_PATH . $fileName;
         $fileType = explode('/', $file->getMimeType())[0];
+        $fileUrl = Storage::url($fileName);
 
         $message = $this->messageRepository->getById($messageId);
-        $file = $this->fileRepository->create($filePath, $fileType);
+        $file = $this->fileRepository->create($filePath, $fileType, $fileUrl);
 
         $this->messageRepository->attachFileToMessage($message, $file->id);
     }
@@ -48,7 +50,7 @@ class FileService implements FileServiceInterface
         $file = $this->fileRepository->getById($fileId);
         $message = $this->messageRepository->getById($messageId);
 
-        $filePath = str_replace(config('app.url') . '/' . self::STORAGE_PATH , '', $file->path);
+        $filePath = str_replace(self::STORAGE_PATH , '', $file->path);
         Storage::delete($filePath);
 
         $this->messageRepository->detachFileFromMessage($message, $file->id);

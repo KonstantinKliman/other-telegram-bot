@@ -8,7 +8,9 @@ use App\Services\Interfaces\ButtonServiceInterface;
 use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\MessageServiceInterface;
 use App\Services\Interfaces\TelegramUserServiceInterface;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
@@ -51,20 +53,16 @@ class StartConversation extends InlineMenu
         $this->closeMenu();
 
         foreach ($files as $file) {
-            Log::info('Файл для отправки:', [
-                'type' => $file->type,
-                'path' => $file->path,
-            ]);
             switch ($file->type) {
                 case FileTypeEnum::IMAGE->value :
                     $bot->sendPhoto(
-                        photo: str_replace('http://', 'https://', $file->path),
+                        photo: InputFile::make(fopen($file->path, 'r+')),
                         chat_id: $chatId,
                     );
                     break;
                 case FileTypeEnum::VIDEO->value :
                     $bot->sendVideo(
-                        video: str_replace('http://', 'https://', $file->path),
+                        video: InputFile::make(fopen($file->path, 'r+')),
                         chat_id: $chatId,
                     );
                     break;
@@ -85,7 +83,7 @@ class StartConversation extends InlineMenu
 
         $text = $this->messageService->getMessageByType(MessageTypeEnum::LAST_MESSAGE);
 
-        $bot->sendMessage($text);
+        $bot->sendMessage($text->text);
 
         $this->end();
     }

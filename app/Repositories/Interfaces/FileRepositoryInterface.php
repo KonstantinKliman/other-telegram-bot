@@ -6,7 +6,7 @@ use App\Models\File;
 
 interface FileRepositoryInterface
 {
-    public function create(string $filePath, string $fileType);
+    public function create(string $filePath, string $fileType, string $fileUrl) : File;
 
     public function getById(int $fileId);
 

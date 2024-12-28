@@ -10,7 +10,8 @@ class File extends Model
 
     protected $fillable = [
         'type',
-        'path'
+        'path',
+        'url'
     ];
 
     public function messages()

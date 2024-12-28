@@ -16,14 +16,14 @@
                     @foreach($files as $file)
                         @switch($file->type)
                             @case(\App\Enums\FileTypeEnum::IMAGE->value)
-                                <a href="{{ $file->path }}" class="btn btn-sm btn-secondary me-2" target="_blank">{{ ucfirst($file->type) }}</a>
+                                <a href="{{ $file->url }}" class="btn btn-sm btn-secondary me-2" target="_blank">{{ ucfirst($file->type) }}</a>
                                 <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
                                 </form>
                                 @break
                             @case(\App\Enums\FileTypeEnum::VIDEO->value)
-                                <a href="{{ $file->path }}" class="btn btn-sm btn-primary  me-2" target="_blank">{{ ucfirst($file->type) }}</a>
+                                <a href="{{ $file->url }}" class="btn btn-sm btn-primary  me-2" target="_blank">{{ ucfirst($file->type) }}</a>
                                 <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
