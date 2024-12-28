@@ -14,6 +14,16 @@
                 <a href="{{ route('telegram-bot.messages.create') }}" class="btn btn-success">Create message</a>
             </div>
         </div>
+        @if(session('status'))
+            <div class="row d-flex justify-content-center my-3">
+                <div class="col-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="row">
             @foreach($messages as $index => $message)
                 <div class="col-md-6 col-lg-4 mb-4">

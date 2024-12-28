@@ -14,6 +14,16 @@
                 <a href="{{ route('telegram-bot.buttons.create') }}" class="btn btn-success">Create button</a>
             </div>
         </div>
+        @if(session('status'))
+            <div class="row d-flex justify-content-center my-3">
+                <div class="col-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
         @foreach($buttons as $index => $button)
             <div class="row mx-2 my-3">
                 <div class="col-12 bg-body-secondary border rounded p-3">

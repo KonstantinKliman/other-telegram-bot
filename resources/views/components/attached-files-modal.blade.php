@@ -12,22 +12,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex">
+                <div class="d-flex flex-column justify-content-start">
                     @foreach($files as $file)
                         @switch($file->type)
                             @case(\App\Enums\FileTypeEnum::IMAGE->value)
-                                <a href="{{ $file->url }}" class="btn btn-sm btn-secondary me-2" target="_blank">{{ ucfirst($file->type) }}</a>
-                                <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
-                                </form>
+                                <div class="d-flex flex-row my-1">
+                                    <a href="{{ $file->url }}" class="btn btn-sm btn-secondary me-2" target="_blank">{{ ucfirst($file->type) }}</a>
+                                    <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
+                                    </form>
+                                </div>
                                 @break
                             @case(\App\Enums\FileTypeEnum::VIDEO->value)
-                                <a href="{{ $file->url }}" class="btn btn-sm btn-primary  me-2" target="_blank">{{ ucfirst($file->type) }}</a>
-                                <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
-                                </form>
+                                <div class="d-flex flex-row my-1">
+                                    <a href="{{ $file->url }}" class="btn btn-sm btn-primary  me-2" target="_blank">{{ ucfirst($file->type) }}</a>
+                                    <form action="{{ route('telegram-bot.files.delete', ['messageId' => $messageId, 'fileId' => $file->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete {{ ucfirst($file->type) }}</button>
+                                    </form>
+                                </div>
                                 @break
                         @endswitch
                     @endforeach
