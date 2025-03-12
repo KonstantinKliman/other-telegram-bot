@@ -25,14 +25,25 @@
                     @foreach($users as $index => $user)
                         <tr>
                             <th class="align-middle" scope="row">{{ ++$index }}</th>
-                            <td class="align-middle"><a class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" href="https://t.me/{{ $user->username }}">{{ $user->username }}</a></td>
+                            @if($user->username)
+                                <td class="align-middle"><a class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" href="https://t.me/{{ $user->username }}">{{ $user->username ?? "Empty" }}</a></td>
+                            @else
+                                <td class="align-middle"><p class="text-light text-opacity-50 m-0">Empty</p></td>
+                            @endif
                             <td class="align-middle">{{ $user->first_name }}</td>
-                            <td class="align-middle">{{ $user->last_name ?? "Empty" }}</td>
-                            <td class="align-middle">@if($user->userData) <x-data-modal :telegram-user="$user" /> @else Empty @endif</td>
+                            @if($user->last_name)
+                                <td class="align-middle">{{ $user->last_name ?? "Empty" }}</td>
+                            @else
+                                <td class="align-middle"><p class="text-light text-opacity-50 m-0">Empty</p></td>
+                            @endif
+                            <td class="align-middle">@if($user->userData) <x-data-modal :telegram-user="$user" /> @else <p class="text-light text-opacity-50 m-0">Empty</p> @endif</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                <div>
+                    {{ $users->links() }}
+                </div>
             </div>
         </div>
     </div>
