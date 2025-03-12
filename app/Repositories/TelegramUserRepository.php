@@ -9,14 +9,14 @@ use SergiX44\Nutgram\Telegram\Types\User\User;
 class TelegramUserRepository implements TelegramUserRepositoryInterface
 {
 
-    public function firstOrCreate(int $chatId, string $username, string $firstName, ?string $lastName) : TelegramUser
+    public function firstOrCreate(int $chatId, ?string $username, string $firstName, ?string $lastName) : TelegramUser
     {
         return TelegramUser::query()->firstOrCreate([
             'chat_id' => $chatId
         ], [
-            'username' => $username,
+            'username' => $username ?? null,
             'first_name' => $firstName,
-            'last_name' => $lastName
+            'last_name' => $lastName ?? null
         ]);
     }
 

@@ -19,9 +19,9 @@ class TelegramUserService implements TelegramUserServiceInterface
     {
         return $this->telegramUserRepository->firstOrCreate(
             $user->id,
-            $user->username,
+            $user->username ?? null,
             $user->first_name,
-            $user->last_name
+            $user->last_name ?? null
         );
     }
 
